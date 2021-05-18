@@ -1,9 +1,16 @@
-def initiateAttack():
+import sys
+
+def create_connection(ip):
+    print(ip)
+
+
+def initiateAttack(ip):
     #TODO make the attack doggie
-    stuff
+    create_connection(ip)
 
 def main():
-    print("hello")
+    ip = sys.argv[1]
+    initiateAttack(ip)
 
 if __name__ == "__main__":
     main()
