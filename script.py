@@ -2,20 +2,12 @@ import sys
 import socket
 
 PORT = 8000
+STANDARD_GET_REQUEST = "GET / HTTP/1.1"
 
 def create_connection(ip):
-    print(ip)
-    with socket.socket(socket.AF_INET,socket.SOCK_STREAM) as s:
-        s.bind((ip, PORT))
-        s.listen()
-        connection, address = s.accept()
-        with connection:
-            print(address)
-            while True:
-                data = connection.recv(1024)
-                if not data:
-                    break
-                connection.sendall(data)
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.connect((ip, PORT))
+    s.send(str.encode(STANDARD_GET_REQUEST))
 
 
 def initiateAttack(ip):
