@@ -2,6 +2,7 @@ import sys
 import socket
 import random
 import time
+import string
 
 STANDARD_GET_REQUEST_HEADERS = ["User-agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:54.0) Gecko/20100101 Firefox/54.0",
                                "User-agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1",
@@ -13,11 +14,8 @@ SOCKET_CONNECTIONS = []
 
 def sendRequest():
     for s in SOCKET_CONNECTIONS:
-
         print(str(s.getsockname()) + " is sending GET REQUEST!") 
-
         s.send(str.encode("GET / HTTP/1.1\r\n"))
-
         for header in STANDARD_GET_REQUEST_HEADERS:
             s.send(str.encode("{}\r\n".format(header)))
 
