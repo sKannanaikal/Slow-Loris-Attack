@@ -1,2 +1,2 @@
 # Slow-Loris-Attack
-Simple python DDOS
+A python script that performs a DDOS attack utilizing the slow loris method.  Specifially this DDOS attack method targets the multithreading flaw found in apache webservers.  It will open x amount of sessions in hopes of loading all the available session threads in an attempt to overload the server.  In order to continue ot maintian the sessions every few seconds a few bytes will be sent.
